@@ -11,6 +11,6 @@ POST {{base_url}}/messages
 content-type: application/json
 
 {
-    "content": "sample 2",
+    "content": "Hola",
     "role":"user"
 }

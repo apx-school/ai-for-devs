@@ -1,0 +1,24 @@
+{
+  "name": "clase-3-json",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "dotenvx run -- tsx --watch ./src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Marcelo Zapaia",
+  "license": "ISC",
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.44.0",
+    "openai": "^4.98.0",
+    "tsx": "^4.19.4",
+    "zod": "^3.25.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.20",
+    "typescript": "^5.8.3"
+  }
+}
