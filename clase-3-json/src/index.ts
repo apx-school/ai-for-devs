@@ -1,32 +1,32 @@
 import OpenAI from "openai";
-import { zodResponseFormat } from "openai/helpers/zod";
+import { zodResponseFormat, zodTextFormat } from "openai/helpers/zod";
 import z from "zod";
 
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 // const openai = new OpenAI({
 //   apiKey: process.env.DEEPSEEK_API_KEY,
 //   baseURL: "https://api.deepseek.com",
 // });
 
-const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
-});
+// const openai = new OpenAI({
+//   apiKey: process.env.GROQ_API_KEY,
+//   baseURL: "https://api.groq.com/openai/v1",
+// });
 
 // Cada modelo tiene su forma de generar salidas estructuradas
 // Open AI Docs: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#json-mode
 
 async function main() {
-  const jsonSchema = zodResponseFormat(
-    z.object({
-      subject: z.string(),
-      body: z.string(),
-    }),
-    "json"
-  );
+  const emailSchema = z.object({
+    subject: z.string(),
+    body: z.string(),
+  });
+  const jsonSchema = zodResponseFormat(emailSchema, "json");
+  // console.log(jsonSchema);
+  // return;
 
   const completion = await openai.chat.completions.create({
     messages: [
@@ -50,13 +50,13 @@ async function main() {
       {
         role: "system",
         content: `# Respuesta JSON
-          Debes responde en formato json, usando este esquema: ${JSON.stringify(
+          Debes responder en formato json, usando este esquema: ${JSON.stringify(
             jsonSchema
           )}
           `,
       },
     ],
-    temperature: 1.2,
+    // temperature: 1.2,
     response_format: { type: "json_object" },
     // response_format: zodResponseFormat(
     //   z.object({
@@ -66,17 +66,20 @@ async function main() {
     //   "json"
     // ),
     // response_format: ,
-    // model: "gpt-4.1-mini",
+    model: "gpt-4.1-mini",
     // model: "deepseek-chat",
-    model: "llama3-8b-8192",
+    // model: "llama3-8b-8192",
     // max_completion_tokens: 30,
   });
 
-  const obj = JSON.parse(completion?.choices[0]?.message?.content || "{}");
-  // console.log(completion);
-  // console.log(completion.choices[0].message);
+  // console.log(response.output_parsed?.subject);
+  // console.log(response.output_parsed?.body);
 
-  console.log(obj);
+  // const obj = JSON.parse(completion?.choices[0]?.message?.content || "{}");
+  console.log(completion);
+  console.log(completion.choices[0].message);
+
+  // console.log(obj);
 }
 
 main();

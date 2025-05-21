@@ -27,16 +27,20 @@ async function main() {
     to: z.string(),
   });
 
+  const pokemonSchema = z.object({
+    name: z.string(),
+  });
+
   const runner = openai.beta.chat.completions.runTools({
     messages: [
       {
         role: "system",
-        content: "Necesito que asistas al usuario y hagas lo que tepida",
+        content: `Necesito que asistas al usuario`,
       },
       {
         role: "user",
         content:
-          "Hola, quiero comprar que me mandes un email con un haiku sobre dragon ball a mi mail marce@apx.school.",
+          "Hola, quiero me gustaría que me mandes al mail toda la info de charmander y pikachu en un resumen, corto de menos de 60 palabras a marce@apx.school.",
       },
     ],
     // temperature: 1.2,
@@ -62,7 +66,7 @@ async function main() {
           function: async (args) => {
             console.log("Enviando email", args);
 
-            return "Email enviado con éxito";
+            return "Mail enviado con éxito";
           },
           parse: (params) => {
             const parsed =
@@ -71,6 +75,27 @@ async function main() {
             return paramsSchema.parse(parsed);
           },
           parameters: zodToJsonSchema(paramsSchema) as JSONSchema,
+        },
+      },
+      {
+        type: "function",
+        function: {
+          name: "getPokemonData",
+          description: "Esta herramienta obtiene informacion de un pokemon",
+          function: async (args) => {
+            console.log("Obteniendo data de pokemon", args);
+            const res = await fetch(
+              "https://pokeapi.co/api/v2/pokemon/" + args.name
+            );
+            return res.json();
+          },
+          parse: (params) => {
+            const parsed =
+              typeof params === "string" ? JSON.parse(params) : params;
+            // console.log("parsed", parsed);
+            return pokemonSchema.parse(parsed);
+          },
+          parameters: zodToJsonSchema(pokemonSchema) as JSONSchema,
         },
       },
     ],
