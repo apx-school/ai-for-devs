@@ -1,0 +1,47 @@
+.root {
+  display: grid;
+  height: 100svh;
+  grid-template-rows: 1fr auto;
+  gap: 1rem;
+  width: 100%;
+}
+
+.messages {
+  overflow: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  border-radius: 12px;
+  padding: 12px;
+  background-color: #fff;
+  color: #000;
+  max-width: 80%;
+}
+
+.message:global(.user) {
+  background: #000;
+  color: #fff;
+  align-self: flex-end;
+}
+
+.inputContainer {
+  display: flex;
+  padding: 12px;
+  gap: 12px;
+}
+
+.input {
+  flex: 1;
+}
+
+.fileInput {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  background-color: blue;
+  font-size: 30px;
+}
