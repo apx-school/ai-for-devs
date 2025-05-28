@@ -20,6 +20,23 @@ const openai = new OpenAI({
 // Cada modelo tiene su forma de generar salidas estructuradas
 // Open AI Docs: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#json-mode
 
+// async function mainMCP() {
+//   console.log("start");
+//   const response = await openai.responses.create({
+//     model: "gpt-4.1",
+//     tools: [
+//       {
+//         type: "mcp",
+//         server_label: "shopify",
+//         server_url: "https://pitchskin.com/api/mcp",
+//       },
+//     ],
+//     input: "Add the Blemish Toner Pads to my cart",
+//   });
+//   console.log("end");
+//   console.log(response);
+// }
+
 async function main() {
   const paramsSchema = z.object({
     subject: z.string(),
